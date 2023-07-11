@@ -1,93 +1,213 @@
 <template>
   <main class="x-content">
-    <div class ="border-line">
-    <h2>Авторы</h2>
-    <create-author-form @create="addAuthor"></create-author-form>
-    <authors-list :authors="authors"></authors-list>
+    <x-modal v-model="createAuthorFormVisible">
+      <create-author-form @create="addAuthor"></create-author-form>
+    </x-modal>
+    <x-modal v-model="createPostFormVisible">
+      <create-post-form @create="addPost"></create-post-form>
+    </x-modal>
+    <x-modal v-model="createTagFormVisible">
+      <create-tag-form @create="addTag"></create-tag-form>
+    </x-modal>
+    <div class="border-line">
+      <div class="block-header">
+        <h2 class="block-title">Список авторов</h2>
+        <div class="block-header_sorting-add">
+          <x-select v-model="selectedSortAuthors" :options="sortOptionsAuthors" @change="sortAuthors"></x-select>
+          <x-button class="x-append" @click="createAuthorFormVisible = true"
+                    style="margin-left: auto; margin-right: 10px">
+            Добавить
+          </x-button>
+        </div>
+      </div>
+      <authors-list :authors="sortedAuthors" @remove="removeAuthor"></authors-list>
     </div>
-    <div class = "border-line">
-     <h2>Заметки</h2>
-    <create-post-form @create="addPost"></create-post-form>
-    <post-list :posts="posts"></post-list>
-    </div>
-    <div class = "border-line">
-     <h2>Теги</h2>
-     <create-tag-form @create="addTags"></create-tag-form>
-     <tag-list :tags="tags"></tag-list>
 
+    <div class="border-line">
+      <div class="block-header">
+        <h2 class="block-title">Список постов</h2>
+        <div class="block-header_sorting-add">
+          <x-select v-model="selectedSortPosts" :options="sortOptionsPosts" @change="sortPosts"></x-select>
+          <x-button class="x-append" @click="createPostFormVisible = true"
+                    style="margin-left: auto; margin-right: 10px">
+            Добавить
+          </x-button>
+        </div>
+      </div>
+      <post-list :posts="sortedPosts" @remove="removePost"></post-list>
+    </div>
+
+    <div class="border-line">
+      <div class="block-header">
+        <h2 class="block-title">Список тегов</h2>
+        <div class="block-header_sorting-add">
+          <x-select v-model="selectedSortTags" :options="sortOptionsTags" @change="sortTags"></x-select>
+          <x-button class="x-append" @click="createTagFormVisible = true"
+                    style="margin-left: auto; margin-right: 10px">
+            Добавить
+          </x-button>
+        </div>
+      </div>
+      <tag-list :tags="sortedTags" @remove="removeTag"></tag-list>
     </div>
   </main>
 </template>
 
 <script>
-import CreateAuthorForm from '@/components/CreateAuthorForm.vue';
-import AuthorsList from "@/components/AuthorsList.vue";
-import CreatePostForm from "@/components/CreatePostForm.vue";
-import PostList from "@/components/PostList.vue";
-import CreateTagForm from "@/components/CreateTagForm.vue";
-import TagList from "@/components/TagList.vue";
+import CreateAuthorForm from '@/components/Author/CreateAuthorForm.vue';
+import AuthorsList from "@/components/Author/AuthorsList.vue";
+import CreatePostForm from "@/components/Post/CreatePostForm.vue";
+import PostList from "@/components/Post/PostList.vue";
+import CreateTagForm from "@/components/Tag/CreateTagForm.vue";
+import TagList from "@/components/Tag/TagList.vue";
+import XModal from "@/components/UI/XModal.vue";
+import XSelect from "@/components/UI/XSelect.vue";
+import XButton from "@/components/UI/XButton.vue";
+
 export default {
-  name:"AppCounter",
-  components:{AuthorsList, CreateAuthorForm, CreatePostForm, PostList, TagList,CreateTagForm},
+  name: "AppCounter",
+  components: {
+    AuthorsList,
+    CreateAuthorForm,
+    CreatePostForm,
+    PostList,
+    TagList,
+    CreateTagForm,
+    XModal,
+    XSelect,
+    XButton,
+  },
   data() {
     return {
       authors: [
-        {id:1, name: "Николай", email:"a@yandex.ru", age:"18" },
-        {id:2, name: "Андрей", email:"b@yandex.ru", age:"25" }
+        { id: 1, name: "Николай", email: "a@yandex.com", age: 18 },
+        { id: 2, name: "Андрей", email: "b@yandex.com", age: 27 },
+        { id: 3, name: "Иван", email: "c@yandex.com", age: 24 },
       ],
       posts: [
         {
-          id:1,
-          author: "Николай",
-          title:"Учёба",
-          text:"Сделать страницу приложения на базе фреймворка",
-          status:"Да",
-          tags:"1"
+          id: 1,
+          author: 'Николай',
+          title: 'Учеба',
+          text: 'Сделать дз по интенсиву',
+          status: '21:45',
+          tags: 1,
         },
         {
-          id:2,
-          author: "Андрей",
-          title:"Работа",
-          text:"Разобраться с бумажной работой",
-          status:"Да",
-          tags:"1"
-        }
+          id: 2,
+          author: 'Иван',
+          title: 'Работа',
+          text: 'Сдать проект',
+          status: '13:00',
+          tags: 1,
+        },
       ],
       tags: [
         {
-          id:1,
-          name: "Учебная деятельность",
-          description: "Ученье — свет, а неученье — тьма.",
-          num_posts: 1
-        }
+          id: 1,
+          name: 'Учебная деятельность',
+          description: "Ученье свет - неученье тьма",
+          num_posts: 1,
+        },
+        {
+          id: 2,
+          name: 'Рабочая деятельность',
+          description: "Без труда не выловишь рыбку из пруда",
+          num_posts: 1,
+        },
       ],
-
-      nextAuthorId: 2,
-      nextPostId: 2,
-      nextTagId: 1,
-    }
+      nextAuthorId: 4,
+      nextPostId: 3,
+      nextTagId: 3,
+      createAuthorFormVisible: false,
+      createPostFormVisible: false,
+      createTagFormVisible: false,
+      selectedSortAuthors: "",
+      sortOptionsAuthors: [
+        { value: 'name', name: "По имени" },
+        { value: 'age', name: "По возрасту" },
+      ],
+      selectedSortPosts: "",
+      sortOptionsPosts: [
+        { value: 'title', name: 'По заголовку заметки' },
+        { value: 'status', name: 'По времени создания' },
+        { value: 'tags', name: 'По количеству тегов' },
+      ],
+      selectedSortTags: "",
+      sortOptionsTags: [
+        { value: "name", name: 'По названию тега' },
+        { value: "num_posts", name: 'По количеству заметок' },
+      ],
+    };
+  },
+  computed: {
+    sortedAuthors() {
+      return [...this.authors].sort((author1, author2) =>
+          author1[this.selectedSortAuthors]?.localeCompare(
+              author2[this.selectedSortAuthors]
+          )
+      );
+    },
+    sortedPosts() {
+      return [...this.posts].sort((post1, post2) =>
+          post1[this.selectedSortPosts]?.localeCompare(post2[this.selectedSortPosts])
+      );
+    },
+    sortedTags() {
+      return [...this.tags].sort((tag1, tag2) =>
+          tag1[this.selectedSortTags]?.localeCompare(tag2[this.selectedSortTags])
+      );
+    },
   },
   methods: {
     addAuthor(author) {
-      this.nextAuthorId++;
-      author.id = this.nextAuthorId;
+      author.id = this.nextAuthorId++;
+      this.createAuthorFormVisible = false;
       this.authors.push(author);
     },
     addPost(post) {
-      this.nextPostId++;
-      post.id = this.nextPostId;
+      post.id = this.nextPostId++;
+      this.createPostFormVisible = false;
       this.posts.push(post);
     },
-    addTags(tag) {
-      this.nextTagId++;
-      tag.id = this.nextTagId;
+    addTag(tag) {
+      tag.id = this.nextTagId++;
+      this.createTagFormVisible = false;
       this.tags.push(tag);
-    }
-  }
-
-
-}
+    },
+    removeAuthor(author) {
+      this.authors = this.authors.filter((elem) => elem.id !== author.id);
+    },
+    removePost(post) {
+      this.posts = this.posts.filter((elem) => elem.id !== post.id);
+    },
+    removeTag(tag) {
+      this.tags = this.tags.filter((elem) => elem.id !== tag.id);
+    },
+    sortAuthors() {
+      this.sortedAuthors = [...this.authors].sort((author1, author2) =>
+          author1[this.selectedSortAuthors]?.localeCompare(
+              author2[this.selectedSortAuthors]
+          )
+      );
+    },
+    sortPosts() {
+      this.sortedPosts = [...this.posts].sort((post1, post2) =>
+          post1[this.selectedSortPosts]?.localeCompare(post2[this.selectedSortPosts])
+      );
+    },
+    sortTags() {
+      this.sortedTags = [...this.tags].sort((tag1, tag2) =>
+          tag1[this.selectedSortTags]?.localeCompare(tag2[this.selectedSortTags])
+      );
+    },
+  },
+};
 </script>
+
+
+
+
 <style scoped>
 .x-content {
   display: flex;
@@ -101,7 +221,13 @@ export default {
   border: #6EAFF1 solid 5px;
   border-radius: 10px;
 }
+.block-header {
+  display: flex;
+  margin-bottom: 20px;
+  align-items: center;
+  justify-content: space-between;
 
+}
 .border-line h2 {
   font-size: 20px;
 }
