@@ -13,7 +13,7 @@
       <div class="block-header">
         <h2 class="block-title">Список авторов</h2>
         <div class="block-header_sorting-add">
-          <x-select v-model="selectedSortAuthors" :options="sortOptionsAuthors" @change="sortAuthors"></x-select>
+          <x-select v-model="selectedSortAuthors" :options="sortOptionsAuthors"></x-select>
           <x-button class="x-append" @click="createAuthorFormVisible = true"
                     style="margin-left: auto; margin-right: 10px">
             Добавить
@@ -27,7 +27,7 @@
       <div class="block-header">
         <h2 class="block-title">Список постов</h2>
         <div class="block-header_sorting-add">
-          <x-select v-model="selectedSortPosts" :options="sortOptionsPosts" @change="sortPosts"></x-select>
+          <x-select v-model="selectedSortPosts" :options="sortOptionsPosts"></x-select>
           <x-button class="x-append" @click="createPostFormVisible = true"
                     style="margin-left: auto; margin-right: 10px">
             Добавить
@@ -41,7 +41,7 @@
       <div class="block-header">
         <h2 class="block-title">Список тегов</h2>
         <div class="block-header_sorting-add">
-          <x-select v-model="selectedSortTags" :options="sortOptionsTags" @change="sortTags"></x-select>
+          <x-select v-model="selectedSortTags" :options="sortOptionsTags"></x-select>
           <x-button class="x-append" @click="createTagFormVisible = true"
                     style="margin-left: auto; margin-right: 10px">
             Добавить
@@ -73,9 +73,9 @@ export default {
     PostList,
     TagList,
     CreateTagForm,
+    XButton,
     XModal,
     XSelect,
-    XButton,
   },
   data() {
     return {
@@ -116,9 +116,6 @@ export default {
           num_posts: 1,
         },
       ],
-      nextAuthorId: 4,
-      nextPostId: 3,
-      nextTagId: 3,
       createAuthorFormVisible: false,
       createPostFormVisible: false,
       createTagFormVisible: false,
@@ -138,42 +135,44 @@ export default {
         { value: "name", name: 'По названию тега' },
         { value: "num_posts", name: 'По количеству заметок' },
       ],
-    };
+      nextAuthorId: 4,
+      nextPostId: 3,
+      nextTagId: 3,
+    }
   },
   computed: {
     sortedAuthors() {
       return [...this.authors].sort((author1, author2) =>
           author1[this.selectedSortAuthors]?.localeCompare(
-              author2[this.selectedSortAuthors]
-          )
-      );
+              author2[this.selectedSortAuthors]))
     },
     sortedPosts() {
       return [...this.posts].sort((post1, post2) =>
-          post1[this.selectedSortPosts]?.localeCompare(post2[this.selectedSortPosts])
-      );
+          post1[this.selectedSortPosts]?.localeCompare(post2[this.selectedSortPosts]))
     },
     sortedTags() {
       return [...this.tags].sort((tag1, tag2) =>
-          tag1[this.selectedSortTags]?.localeCompare(tag2[this.selectedSortTags])
-      );
+          tag1[this.selectedSortTags]?.localeCompare(tag2[this.selectedSortTags]))
     },
   },
   methods: {
     addAuthor(author) {
-      author.id = this.nextAuthorId++;
-      this.createAuthorFormVisible = false;
+      author.id = this.nextAuthorId;
       this.authors.push(author);
+      this.createAuthorFormVisible = false;
+      this.nextAuthorId++;
     },
     addPost(post) {
-      post.id = this.nextPostId++;
-      this.createPostFormVisible = false;
+      post.id = this.nextPostId;
       this.posts.push(post);
+      this.createPostFormVisible = false;
+      this.nextPostId++;
     },
     addTag(tag) {
-      tag.id = this.nextTagId++;
-      this.createTagFormVisible = false;
+      tag.id = this.nextTagId;
       this.tags.push(tag);
+      this.createTagFormVisible = false;
+      this.nextTagId++;
     },
     removeAuthor(author) {
       this.authors = this.authors.filter((elem) => elem.id !== author.id);
@@ -184,23 +183,7 @@ export default {
     removeTag(tag) {
       this.tags = this.tags.filter((elem) => elem.id !== tag.id);
     },
-    sortAuthors() {
-      this.sortedAuthors = [...this.authors].sort((author1, author2) =>
-          author1[this.selectedSortAuthors]?.localeCompare(
-              author2[this.selectedSortAuthors]
-          )
-      );
-    },
-    sortPosts() {
-      this.sortedPosts = [...this.posts].sort((post1, post2) =>
-          post1[this.selectedSortPosts]?.localeCompare(post2[this.selectedSortPosts])
-      );
-    },
-    sortTags() {
-      this.sortedTags = [...this.tags].sort((tag1, tag2) =>
-          tag1[this.selectedSortTags]?.localeCompare(tag2[this.selectedSortTags])
-      );
-    },
+
   },
 };
 </script>

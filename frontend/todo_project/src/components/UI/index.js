@@ -1,10 +1,10 @@
-import xButton from '@/components/UI/XButton.vue';
-import xInput from '@/components/UI/XInput.vue';
-import xModal from '@/components/UI/XModal.vue';
-import xSelect from '@/components/UI/XSelect.vue';
+import XButton from "@/components/UI/XButton.vue";
+import XInput from "@/components/UI/XInput.vue";
+import XModal from "@/components/UI/XModal.vue";
+import XSelect from "@/components/UI/XSelect.vue";
 export default  [
-    xButton,
-    xInput,
-    xModal,
-    xSelect,
+    XButton,
+    XInput,
+    XModal,
+    XSelect,
 ]
