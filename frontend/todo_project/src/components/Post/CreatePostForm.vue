@@ -1,5 +1,4 @@
 <template>
-  <div>
     <form class="x-form_post" @submit.prevent>
       <h3>Добавить заметку</h3>
       <x-input type="text" placeholder="Автор тега" v-model="post.author"/>
@@ -9,8 +8,9 @@
       <x-input type="text" placeholder="Теги" class="x_input" v-model="post.tags"/>
       <x-button @click="addPost">Добавить заметку</x-button>
     </form>
-  </div>
 </template>
+
+
 <script>
 
 

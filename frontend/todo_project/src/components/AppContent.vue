@@ -80,9 +80,9 @@ export default {
   data() {
     return {
       authors: [
-        { id: 1, name: "Николай", email: "a@yandex.com", age: 18 },
-        { id: 2, name: "Андрей", email: "b@yandex.com", age: 27 },
-        { id: 3, name: "Иван", email: "c@yandex.com", age: 24 },
+        { id: 1, name: "Николай", email: "a@yandex.com", age: '18' },
+        { id: 2, name: "Андрей", email: "b@yandex.com", age: '27' },
+        { id: 3, name: "Иван", email: "c@yandex.com", age: '24' },
       ],
       posts: [
         {
@@ -91,7 +91,7 @@ export default {
           title: 'Учеба',
           text: 'Сделать дз по интенсиву',
           status: '21:45',
-          tags: 1,
+          tags: '1',
         },
         {
           id: 2,
@@ -99,7 +99,7 @@ export default {
           title: 'Работа',
           text: 'Сдать проект',
           status: '13:00',
-          tags: 1,
+          tags: '2',
         },
       ],
       tags: [
@@ -107,13 +107,13 @@ export default {
           id: 1,
           name: 'Учебная деятельность',
           description: "Ученье свет - неученье тьма",
-          num_posts: 1,
+          num_posts: '2',
         },
         {
           id: 2,
           name: 'Рабочая деятельность',
           description: "Без труда не выловишь рыбку из пруда",
-          num_posts: 1,
+          num_posts: '1',
         },
       ],
       createAuthorFormVisible: false,
@@ -215,4 +215,3 @@ export default {
   font-size: 20px;
 }
 </style>
-

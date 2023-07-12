@@ -22,7 +22,7 @@
           <td class="x-table_tbody-colon">{{ post.status }}</td>
           <td class="x-table_tbody-colon">{{ post.tags }}</td>
           <td class="x-table_tbody-colon">
-            <x-button class="warning" @click="$emit('remove', author)">Удалить</x-button>
+            <x-button class="warning" @click="$emit('remove', post)">Удалить</x-button>
           </td>
         </tr>
         </tbody>
