@@ -24,6 +24,6 @@ methods: {
   font-size: 16px;
   border-radius: 5px;
   outline: 0;
-  margin-bottom: 10px;
+  margin-bottom: 2px;
 }
 </style>
