@@ -1,4 +1,5 @@
-Django==3.2.20
-djangorestframework==3.14.0
-djangorestframework_simplejwt==5.2.2
-pytz==2023.3
+Django~=3.2.20
+djangorestframework~=3.14.0
+pytz~=2023.3
+django-cors-headers==3.10.1
+tzdata==2022.1
