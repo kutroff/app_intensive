@@ -3,3 +3,4 @@ djangorestframework~=3.14.0
 pytz~=2023.3
 django-cors-headers==3.10.1
 tzdata==2022.1
+
