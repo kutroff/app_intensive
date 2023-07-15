@@ -17,6 +17,10 @@ methods: {
 </script>
 
 <style scoped>
+
+
+
+
 .x_input{
   height: 25px;
   padding: 5px;

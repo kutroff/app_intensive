@@ -219,6 +219,7 @@ export default {
       this.tags = this.tags.filter((elem) => elem.id !== tag.id);
     },
 
+
   },
 };
 </script>
