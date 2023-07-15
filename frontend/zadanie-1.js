@@ -3,15 +3,19 @@ class Student {
         this.name = name;
         this.age = age;
         this.averageScore = averageScore;
+        Student.students.push(this);
+        if (averageScore > Student.maxScore) {
+            Student.maxScore = averageScore;
+        }
     }
 
     increaseAge = () => {
         this.age++;
-    };
+    }
 
-    increaseScore = (amount) => {
+    increaseAverageScore = (amount) => {
         this.averageScore += amount;
-    };
+    }
 
     getStatus = () => {
         if (this.averageScore >= 90) {
@@ -23,42 +27,32 @@ class Student {
         } else {
             return "неуспевающий";
         }
-    };
+    }
 
     static maxScore = 0;
+    static students = [];
 
     static getMaxScore = () => {
         return Student.maxScore;
-    };
+    }
 
-    static filterByScore = (students, score) => {
-        return students.filter((student) => student.averageScore > score);
-    };
+    static filterByScore = (minScore) => {
+        return Student.students.filter(student => student.averageScore > minScore);
+    }
 }
 
-// Пример использования класса "Студент"
+const student1 = new Student("Билл Гейтс", 20, 85);
+const student2 = new Student("Илон Маск", 22, 95);
+const student3 = new Student("Студент ЧГУ", 21, 70);
 
-// Создание нескольких студентов
-const student1 = new Student("Николай", 20, 85);
-const student2 = new Student("Сергей", 22, 95);
-const student3 = new Student("Андрей", 21, 70);
-
-// Увеличение возраста студента
 student1.increaseAge();
+student2.increaseAverageScore(5);
 
-// Увеличение среднего балла студента
-student2.increaseScore(5);
-
-// Получение статуса студента
 console.log(student1.getStatus()); // хорошист
 console.log(student2.getStatus()); // отличник
 console.log(student3.getStatus()); // троечник
 
-// Получение максимального балла
-Student.maxScore = 95;
 console.log(Student.getMaxScore()); // 95
 
-// Фильтрация студентов по среднему баллу
-const students = [student1, student2, student3];
-const filteredStudents = Student.filterByScore(students, 80);
-console.log(filteredStudents);
+const filteredStudents = Student.filterByScore(80);
+console.log(filteredStudents.map(student => ({ name: student.name, age: student.age, averageScore: student.averageScore })));

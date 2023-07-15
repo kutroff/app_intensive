@@ -25,7 +25,12 @@ SECRET_KEY = 'django-insecure-6-u^5lwyqvdj9ik@&5+vu276%sa%9uygd=)f)r@b)rudsiis8=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
 ALLOWED_HOSTS = ['nikolai.pythonanywhere.com']
+
+CORS_ORIGIN_ALLOW_ALL = True
+ALLOWED_HOSTS = []
+
 
 # Application definition
 
@@ -39,7 +44,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'todo',
     'rest_framework',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+    'corsheaders',
+
+
 ]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -61,6 +69,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'taskmanager.urls'
