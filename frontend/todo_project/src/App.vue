@@ -1,19 +1,15 @@
 <template>
   <div>
-  <router-view></router-view>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import AppHeader from "@/components/AppHeader.vue";
-import AppContent from "@/components/AppContent.vue";
+
 
 
 
 export default {
-  components:{
-    AppHeader,AppContent
-  },
   name: 'App',
   data(){
     return{}
@@ -49,4 +45,3 @@ body {
 }
 
 </style>
-

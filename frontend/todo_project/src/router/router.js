@@ -1,14 +1,16 @@
 import Vue from "vue";
-import VueRouter from "vue-router";
+import PostPage from "@/pages/PostPage.vue";
 import LoginPage from "@/pages/LoginPage.vue";
-import TodoPage from "@/pages/TodoPage.vue";
+import VueRouter from "vue-router";
+import store from "@/store";
+
 
 Vue.use(VueRouter);
 
 const routes = [
     {
         path: "/",
-        component: TodoPage,
+        component: PostPage,
         meta: { requiresAuth: true }
     },
     {
@@ -16,20 +18,22 @@ const routes = [
         component: LoginPage,
         meta: { requiresAuth: false }
     }
-];
-const router = new VueRouter( {
+]
+
+const router = new VueRouter({
     mode: 'history',
     base: process.env.BASE_URL,
     routes
-})
+});
 
 router.beforeEach((to, from, next) =>{
-    const token = localStorage.getItem('token')
+    const token = store.state.post.token;
 
-    if(to.meta.requiresAuth && !token) {
-        next('/login')
-    }   else  {
+    if (to.meta.requiresAuth && !token) {
+        next('/login');
+    } else {
         next()
     }
 })
+
 export default router;

@@ -17,7 +17,7 @@ import AppContent from "@/components/AppContent.vue";
 
 
 export default {
-  name:"TodoPage",
+  name:"PostPage",
   components: {AppContent,AppHeader}
 }
 </script>

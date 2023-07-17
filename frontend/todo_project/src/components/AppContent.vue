@@ -221,6 +221,12 @@ export default {
 
 
   },
+  mounted() {
+    console.log(this.$store.state.token)
+    this.$ajax.get('api/post/').then((response) => {
+      console.log(response)
+    })
+  }
 };
 </script>
 

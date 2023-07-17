@@ -5,14 +5,20 @@
       <div class = "x-header_fun-jock">Диалог с клиентом банке:
         — Кредит оформлен на Вас?
         Нет, на холодильник.</div>
-      <button class = "x-header_btn">Выход</button>
+      <button class = "x-header_btn" @click="onLogout"> Выход</button>
     </header>
   </div>
 </template>
 
 <script>
 export default{
-  name:"AppHeader"
+  name:"AppHeader",
+  methods: {
+    onLogout() {
+      this.$store.commit('post/removeToken')
+      this.$router.push('/login')
+    }
+  }
 }
 </script>
 
