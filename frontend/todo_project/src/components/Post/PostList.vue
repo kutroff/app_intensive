@@ -32,7 +32,7 @@
     <div v-else style="color: orangered;">
       Заметки не добавлены
     </div>
-  <edit-post-form value="value"  :post="editingPost" @update="updatePost" @close="editVisible = false" />
+  <edit-post-form :value="editVisible"  :post="editingPost" @update="updatePost" @close="editVisible = false" />
   </div>
 </template>
 <script>

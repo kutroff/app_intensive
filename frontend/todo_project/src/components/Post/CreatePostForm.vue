@@ -1,5 +1,5 @@
 <template>
-  <form class="x-form_post" @submit.prevent="submitForm">
+  <form class="x-form_post" >
     <h3>Добавить заметку</h3>
     <x-input type="text" placeholder="Автор тега" v-model="post.author" :class="{ 'error': isFormSubmitted && !post.author }" />
     <p v-if="isFormSubmitted && !post.author" class="error-message">Пожалуйста, заполните поле Автор тега</p>
@@ -39,11 +39,12 @@ export default {
     submitForm() {
       this.isFormSubmitted = true;
 
-      // Проверка на пустые поля
       if (!this.post.author || !this.post.title || !this.post.text || !this.post.status || !this.post.tags) {
         return;
       }
-      this.$ajax.post('api/post/', {...this.post}).then(() => {
+      const data = {...this.post}
+      data.tags = data.tags.split(";")
+      this.$ajax.post('api/post/', data).then(() => {
         this.$emit('create', {...this.post});
         this.post.author = '';
         this.post.title = '';
