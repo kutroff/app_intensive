@@ -47,7 +47,7 @@ export default {
   methods: {
     saveChanges() {
       this.$ajax
-          .put(`api/post/${this.editedPost.id}`, { ...this.editedPost })
+          .put(`api/post/${this.editedPost.id}/`, { ...this.editedPost })
           .then(() => {
             this.$emit("update", { ...this.editedPost });
             this.closeModal(); // Закрываем модальное окно после успешного сохранения
