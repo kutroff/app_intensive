@@ -144,7 +144,7 @@ export default {
         sortedPosts.sort((post1, post2) => post2.tags.length - post1.tags.length);
       } else if (this.selectedSortPosts === "author") {
         sortedPosts.sort((post1, post2) =>
-            post1.author.localeCompare(post2.author)
+            post1.author_name.localeCompare(post2.author_name)
         );
       } else if (this.selectedSortPosts === "title") {
         sortedPosts.sort((post1, post2) =>

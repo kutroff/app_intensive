@@ -16,7 +16,7 @@
         <transition-group name="fade" tag="tbody" class="x-table_tbody">
           <tr class="x-table_tbody-row" v-for="post in posts" :key="post.id">
             <td class="x-table_tbody-colon">{{ post.id }}</td>
-            <td class="x-table_tbody-colon">{{ post.author}}</td>
+            <td class="x-table_tbody-colon">{{ post.author_name}}</td>
             <td class="x-table_tbody-colon">{{ post.title }}</td>
             <td class="x-table_tbody-colon">{{ post.text }}</td>
             <td class="x-table_tbody-colon">{{ post.status }}</td>
@@ -67,7 +67,7 @@ export default {
         this.$set(this.posts, index, updatedPost);
       }
       this.editVisible = false; // Закрываем модальное окно после сохранения изменений
-    }
+    },
   }
 };
 </script>
