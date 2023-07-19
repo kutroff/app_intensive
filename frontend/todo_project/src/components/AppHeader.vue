@@ -2,9 +2,7 @@
   <div>
     <header class="x-header">
       <strong class="x-header_my-name">Кутров Николай</strong>
-      <div class = "x-header_fun-jock">Диалог с клиентом банке:
-        — Кредит оформлен на Вас?
-        Нет, на холодильник.</div>
+      <div class = "x-header_fun-jock">Авторов добавлять только цифрами 1, 2, 3 а теги списками либо [ 1 ], либо [ 2 ]</div>
       <button class = "x-header_btn" @click="onLogout"> Выход</button>
     </header>
   </div>

@@ -10,6 +10,10 @@
       <create-tag-form @create="addTag"></create-tag-form>
     </x-modal>
     <div class="border-line">
+      <h2 class="block-title">Поиск по заголовку заметки</h2>
+      <x-input v-model="searchTitle" placeholder="Введите заголовок"></x-input>
+    </div>
+    <div class="border-line">
       <div class="block-header">
         <h2 class="block-title">Список авторов</h2>
         <div class="block-header_sorting-add">
@@ -34,7 +38,7 @@
           </x-button>
         </div>
       </div>
-      <post-list :posts="sortedPosts" @remove="removePost"></post-list>
+      <post-list :posts="filteredAndSortedPosts" @remove="removePost"></post-list>
     </div>
 
     <div class="border-line">
@@ -80,46 +84,19 @@ export default {
   data() {
     return {
       authors: [
-        { id: 1, name: "Николай", email: "a@yandex.com", age: 18 },
-        { id: 2, name: "Андрей", email: "b@yandex.com", age: 27 },
-        { id: 3, name: "Иван", email: "c@yandex.com", age: 24 },
+
       ],
       posts: [
-        {
-          id: 1,
-          author: 'Николай',
-          title: 'Учеба',
-          text: 'Сделать дз по интенсиву',
-          status: '21.45',
-          tags: 1,
-        },
-        {
-          id: 2,
-          author: 'Иван',
-          title: 'Работа',
-          text: 'Сдать проект',
-          status: '13.00',
-          tags: 2,
-        },
+
       ],
       tags: [
-        {
-          id: 1,
-          name: 'Учебная деятельность',
-          description: "Ученье свет - неученье тьма",
-          num_posts: '2',
-        },
-        {
-          id: 2,
-          name: 'Рабочая деятельность',
-          description: "Без труда не выловишь рыбку из пруда",
-          num_posts: '1',
-        },
+
       ],
       createAuthorFormVisible: false,
       createPostFormVisible: false,
       createTagFormVisible: false,
       selectedSortAuthors: "",
+      searchTitle: "",
       sortOptionsAuthors: [
         { value: 'id', name: "По id" },
         { value: 'name', name: "По имени" },
@@ -142,12 +119,45 @@ export default {
         { value: "description", name: 'По описанию тега'},
         { value: "num_posts", name: 'По количеству заметок' },
       ],
-      nextAuthorId: 4,
-      nextPostId: 3,
-      nextTagId: 3,
+
     }
   },
   computed: {
+    filteredAndSortedPosts() {
+      let sortedPosts = [...this.posts]; // Копируем исходный массив постов
+
+      // Применяем фильтрацию по заголовку, если указано значение для поиска
+      if (this.searchTitle) {
+        const searchLower = this.searchTitle.toLowerCase().trim();
+        sortedPosts = sortedPosts.filter((post) => {
+          const postTitle = post.title.toLowerCase();
+          return postTitle.includes(searchLower);
+        });
+      }
+
+      // Применяем сортировку к отфильтрованным постам
+      if (this.selectedSortPosts === "id") {
+        sortedPosts.sort((post1, post2) => post2.id - post1.id);
+      } else if (this.selectedSortPosts === "status") {
+        sortedPosts.sort((post1, post2) => post1.status - post2.status);
+      } else if (this.selectedSortPosts === "tags") {
+        sortedPosts.sort((post1, post2) => post2.tags.length - post1.tags.length);
+      } else if (this.selectedSortPosts === "author") {
+        sortedPosts.sort((post1, post2) =>
+            post1.author.localeCompare(post2.author)
+        );
+      } else if (this.selectedSortPosts === "title") {
+        sortedPosts.sort((post1, post2) =>
+            post1.title.localeCompare(post2.title)
+        );
+      } else if (this.selectedSortPosts === "text") {
+        sortedPosts.sort((post1, post2) =>
+            post1.text.localeCompare(post2.text)
+        );
+      }
+
+      return sortedPosts;
+    },
     sortedAuthors() {
       return [...this.authors].sort((author1, author2) => {
         if (this.selectedSortAuthors === "id") {
@@ -189,6 +199,17 @@ export default {
         }
       });
     },
+    filteredPosts() {
+      if (!this.searchTitle) {
+        return this.posts;
+      }
+
+      const searchLower = this.searchTitle.toLowerCase().trim();
+      return this.posts.filter((post) => {
+        const postTitle = post.title.toLowerCase();
+        return postTitle.includes(searchLower);
+      });
+    },
   },
   methods: {
     addAuthor(author) {
@@ -213,10 +234,18 @@ export default {
       this.authors = this.authors.filter((elem) => elem.id !== author.id);
     },
     removePost(post) {
-      this.posts = this.posts.filter((elem) => elem.id !== post.id);
+      this.$ajax.delete(`api/post/${post.id}`).then((response) => {
+        this.posts = this.posts.filter((elem) => elem.id !== post.id);
+      })
+    },
+    removePost1(post) {
+      this.$ajax.delete(`api/post/${post.id}`).then((response) => {
+        this.posts = this.posts.filter((elem) => elem.id !== post.id);
+      })
     },
     removeTag(tag) {
-      this.tags = this.tags.filter((elem) => elem.id !== tag.id);
+        this.tags = this.tags.filter((elem) => elem.id !== tag.id);
+
     },
 
 
@@ -224,7 +253,8 @@ export default {
   mounted() {
     console.log(this.$store.state.token)
     this.$ajax.get('api/post/').then((response) => {
-      console.log(response)
+      this.posts = response.data
+
     })
   }
 };

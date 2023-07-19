@@ -13,7 +13,7 @@
     <x-input type="text" placeholder="Опубликовано" v-model="post.status" v-mask="'##.##'" :class="{ 'error': isFormSubmitted && !post.status }" />
     <p v-if="isFormSubmitted && !post.status" class="error-message">Пожалуйста, заполните поле Опубликовано</p>
 
-    <x-input type="text" placeholder="Теги" class="x_input" v-model="post.tags" v-mask="'##'" :class="{ 'error': isFormSubmitted && !post.tags }" />
+    <x-input type="text" placeholder="Теги" class="x_input" v-model="post.tags" :class="{ 'error': isFormSubmitted && !post.tags }" />
     <p v-if="isFormSubmitted && !post.tags" class="error-message">Пожалуйста, заполните поле Теги</p>
 
     <x-button @click="submitForm">Добавить заметку</x-button>
@@ -43,14 +43,15 @@ export default {
       if (!this.post.author || !this.post.title || !this.post.text || !this.post.status || !this.post.tags) {
         return;
       }
-
-      this.$emit('create', { ...this.post });
-      this.post.author = '';
-      this.post.title = '';
-      this.post.text = '';
-      this.post.status = '';
-      this.post.tags = '';
-      this.isFormSubmitted = false;
+      this.$ajax.post('api/post/', {...this.post}).then(() => {
+        this.$emit('create', {...this.post});
+        this.post.author = '';
+        this.post.title = '';
+        this.post.text = '';
+        this.post.status = '';
+        this.post.tags = '';
+        this.isFormSubmitted = false;
+      })
     }
   }
 }

@@ -1,16 +1,18 @@
 from rest_framework import serializers
-from .models import Author
-from .models import Tag
-from .models import Post
-class AuthorSerializer(serializers.HyperlinkedModelSerializer):
+from .models import Author, Tag, Post
+
+class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
-        fields = ('name', 'email', 'age', 'created_at')
-class TagSerializer(serializers.HyperlinkedModelSerializer):
+        fields = ('id', 'name', 'email', 'age', 'created_at')
+
+class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = ('name', 'description', 'num_posts')
-class PostSerializer(serializers.HyperlinkedModelSerializer):
+        fields = ('id', 'name', 'description', 'num_posts')
+
+class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ('author', 'title', 'text', 'status', 'tags', 'created_at')
+        fields = ('id', 'author', 'title', 'text', 'status', 'tags')
+
